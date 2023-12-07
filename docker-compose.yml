@@ -1,0 +1,21 @@
+
+version: '3.8'
+
+services: # Define los servicios a ejecutar
+
+  mysqldb:  # Servicio para la base de datos MySQL
+    image: mysql # Utiliza la imagen oficial de MySQL disponible en Docker Hub
+    environment: # Configura las variables de entorno para la base de datos MySQL
+      - MYSQL_ROOT_PASSWORD=123456 # Contraseña de la base de datos 
+      - MYSQL_DATABASE=kevin # Nombre de la base de datos que se creará automáticamente
+    ports: # Mapeo de puertos para acceder a la base de datos
+      - 3307:3306
+
+  app: # Servicio para la aplicación
+    build: . # Construye la imagen de la aplicación a partir del Dockerfile en el directorio actual
+    depends_on: # Define la dependencia de este servicio sobre el servicio mysqldb
+      - mysqldb
+    links: # Establece un enlace con el servicio mysqldb para la comunicación
+      - mysqldb
+    ports: # Mapeo de puertos para acceder a la aplicación
+      - 3000:3000 # Mapea el puerto 3000 del host al puerto 3000 del contenedor de la aplicación*
